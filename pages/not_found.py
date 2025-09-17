@@ -1,0 +1,11 @@
+from nicegui import ui
+from components.navbar import show_navbar
+from components.footer import show_footer
+
+
+@ui.page("/not_found")
+def show_not_found_page():
+    show_navbar()
+    ui.label("Not found")
+
+    show_footer()
