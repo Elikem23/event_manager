@@ -1,10 +1,15 @@
 from nicegui import ui
 from components.navbar import show_navbar
 from components.footer import show_footer
+from components.event_card import show_event_card
+import requests
+from utils.api import base_url
+
 
 
 @ui.page("/")
 def show_home_page():
+    ui.query(".nicegui-content").classes("m-0 p-2 gap-0")
     show_navbar()
     with ui.element("section").classes(
         "w-full flex flex-row justify-center items-center"
@@ -13,17 +18,17 @@ def show_home_page():
         with ui.element("div").classes(
             " w-full h-[100%] flex justify-center h-screen items-center text-center bg-[url('/assets/hero.jpg')] bg-cover bg-center rounded-lg"
         ):
-           
+           # text
             with ui.element("div").classes(""):
                 ui.label("MADE FOR THOSE").classes(
                     "text-white text-7xl font-bold text-center"
                 )
                 ui.label("WHO DO").classes("text-white text-7xl font-bold")
-
+            # image
         with ui.element("div").classes("bg-[#03045e] w-4/5 mx-auto p-6 rounded-lg -mt-16"):
             
               with ui.row().classes("gap-6 justify-center"):
-    
+            # select button
                 with ui.column():
                     ui.label("Looking for").classes("text-white text-sm font-medium")
                     ui.select(label="Choose event type",
@@ -46,9 +51,7 @@ def show_home_page():
                         options=["Today", "This Week", "This Month"],
                         value=None,
                     ).classes("bg-white text-black rounded-md w-72")
-
-
-        # Upcoming events
+         # second select button
         with ui.row().classes(
             "flex flex-row justify-between items-center bg-navy-blue w-full px-10 py-5 w-full "
         ):
@@ -73,21 +76,18 @@ def show_home_page():
 
                 category = ["Category", "Corporate", "Social", "charity", "Sports"]
                 ui.select(label="", value="Category", options=category)
-
+        # Upcoming events
         with ui.grid(columns=3).classes("w-full h-full rounded-lg p-4"):
-            for i in range(6):
-                with ui.card():
-                    ui.label("event title")
-                    ui.image("assets/fireworks.jpg").classes("rounded-lg")
-                    ui.label("BestSeller Book bootcamp-write, market and publish ypur book")
-                    ui.label("Saturday March 18, 9:30 PM")
-                    ui.label("ONLINE EVENT")
+            response = requests.get(f"{base_url}/events?limit=0")
+            json_data = response.json()
+            for event in json_data["data"]:
+               show_event_card(event)
 
         with ui.row().classes("w-full justify-center"):
             ui.button("Load More").classes("bg-[#03045e] rounded")
 
         ui.separator().classes('h-10 bg-white')
-
+        # brands
     with ui.column().classes("bg-[#03045e] h-[300px] w-full  mt-20 gap-10"):
         with ui.grid(columns=2).classes("w-full h-full"):
             with ui.column().classes("relative"):
@@ -105,7 +105,7 @@ def show_home_page():
         with ui.row().classes("font-bold text-2xl"):
                 ui.label("Trending")
                 ui.label("Colleges").classes("text-purple")
-        with ui.grid(columns=3).classes("w-4/5 items-stretch justify-center mb-10 w-full"):
+        with ui.grid(columns=3).classes("w-4/5 items-stretch justify-center mb-20 w-full"):
             for i in range(3):
                 with ui.card():
                     ui.image("assets/Havard.png").classes(" w-[20rem] h-[20rem] rounded w-full")
@@ -113,7 +113,7 @@ def show_home_page():
                     ui.label("Cambrigde, Massachusetts")
         with ui.element("div").classes("flex text-center justify-center"): 
            ui.button("Load More")       
-
+        # blogs
     with ui.element("div").classes("w-full"):
         with ui.row().classes("font-bold text-3xl"): 
             ui.label("Our")

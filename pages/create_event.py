@@ -11,6 +11,7 @@ def _handle_image_upload(event):
 
 def _post_event(data, files):
     response = requests.post(f"{base_url}/events", data=data, files=files)
+    print(response.status_code, response.content)
     if response.status_code == 200:
         ui.notify(
             message="Event added succesfully!",
@@ -20,7 +21,7 @@ def _post_event(data, files):
         return ui.notify(
             message="Please ensure all inputs are filled!",
             type="warning")
-    print(response.status_code)
+    
     
         
 

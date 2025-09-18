@@ -6,7 +6,6 @@ def show_navbar():
         ui.link("home", "/")
         ui.link("Signup", "/signup")
         ui.link("Signin", "/signin")
-        ui.link("Events", "/events")
         ui.link("create event", "/create_event")
         ui.link("college", "/college")
         ui.link("not found", "/not_found")
